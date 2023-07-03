@@ -27,38 +27,38 @@ app.shortcut('buddy_up', async ({ shortcut, ack, client, context }) => {
         await ack();
 
         // Open a channel selector modal
-        const result = await client.views.open({
+        const result = await await client.views.open({
             trigger_id: shortcut.trigger_id,
             view: {
                 type: 'modal',
-                callback_id: 'channel_selection',
+                callback_id: 'channel_select_modal',
                 title: {
                     type: 'plain_text',
-                    text: 'Select a Channel',
+                    text: 'Select a channel'
                 },
                 blocks: [
                     {
                         type: 'input',
-                        block_id: 'channel_input',
+                        block_id: 'channel_select_block',
                         label: {
                             type: 'plain_text',
-                            text: 'Channel',
+                            text: 'Channel'
                         },
                         element: {
-                            type: 'channels_select',
-                            action_id: 'channel_select',
+                            type: 'conversations_select',
                             placeholder: {
                                 type: 'plain_text',
-                                text: 'Select a channel',
+                                text: 'Select a channel'
                             },
-                        },
-                    },
+                            action_id: 'channel_select'
+                        }
+                    }
                 ],
                 submit: {
                     type: 'plain_text',
-                    text: 'Submit',
-                },
-            },
+                    text: 'Submit'
+                }
+            }
         });
 
         console.log('Channel selector modal opened:', result);
@@ -68,19 +68,19 @@ app.shortcut('buddy_up', async ({ shortcut, ack, client, context }) => {
 });
 
 // Listens to view submission events
-app.view('channel_selection', async ({ ack, view, client }) => {
+app.view('channel_select_modal', async ({ ack, view, client, body }) => {
     // Acknowledge the view submission
     await ack();
 
     console.log('Channel selection submitted:', view);
 
     try {
-        const selectedChannelId = view['state']['values']['channel_input']['channel_select']['selected_conversation'];
-        const userId = view['user']['id'];
+        const selectedChannel = view.state.values.channel_select_block.channel_select.selected_conversation;
+        const userId = body.user.id; 
 
         // Send a message to the selected channel
         await client.chat.postMessage({
-            channel: selectedChannelId,
+            channel: selectedChannel,
             text: `Hello <@${userId}>! This message was sent from the buddy_up shortcut.`,
         });
     } catch (error) {
