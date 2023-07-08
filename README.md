@@ -4,4 +4,4 @@ The Buddy Up app's primary purpose is to facilitate 1-1 meetups within a Slack c
 
 <img width="768" alt="Buddy Up Message" src="https://github.com/alibad/buddy_up_google_cloud_function/assets/6937273/6571aa13-282f-4551-997b-b60fed1b8e65">
 
-For details on how test this code locally or in production, check out this [blog post]().
+For details on how test this code locally or in production, check out this [blog post](https://medium.com/@alibadereddin/building-the-backend-for-a-slack-app-with-google-cloud-functions-bdb98c09497a).
